@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6672120532953819934}
   - component: {fileID: 7611213731693729326}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,10 +93,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8118970459694034940}
-  - component: {fileID: 7203299859090582150}
   - component: {fileID: 5983303496473376725}
   - component: {fileID: 8118970459694034943}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cloud2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,16 +114,81 @@ Transform:
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children:
   - {fileID: 6672120532953819934}
+  - {fileID: 4331067350897890857}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &7203299859090582150
-BoxCollider2D:
+--- !u!70 &5983303496473376725
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8118970459694034939}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: bd3d4838f2817db488425637fba8e1d9, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.15000004}
+  m_Size: {x: 1.62, y: 0.38000077}
+  m_Direction: 1
+--- !u!114 &8118970459694034943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8118970459694034939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46404bcdaf4a54842bcca5e11efd4f94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LockInput: 0
+  _sprite: {fileID: 7611213731693729326}
+  _collider2D: {fileID: 5983303496473376725}
+  _touchCollider: {fileID: 4395830401723438691}
+--- !u!1 &8261676397109223530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4331067350897890857}
+  - component: {fileID: 233854212240357175}
+  - component: {fileID: 4395830401723438691}
+  m_Layer: 8
+  m_Name: TouchCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4331067350897890857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261676397109223530}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8118970459694034940}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &233854212240357175
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261676397109223530}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -144,34 +208,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.9767017, y: 1.5852883}
   m_EdgeRadius: 0
---- !u!70 &5983303496473376725
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8118970459694034939}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.15000004}
-  m_Size: {x: 1.62, y: 0.38000077}
-  m_Direction: 1
---- !u!114 &8118970459694034943
+--- !u!114 &4395830401723438691
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8118970459694034939}
+  m_GameObject: {fileID: 8261676397109223530}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46404bcdaf4a54842bcca5e11efd4f94, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e9e0ff6c3b780a46a0b7a64f08e3cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 7611213731693729326}
-  _collider2D: {fileID: 5983303496473376725}
-  _clip: 6

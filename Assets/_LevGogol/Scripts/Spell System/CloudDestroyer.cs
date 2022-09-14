@@ -2,12 +2,22 @@
 
 public class CloudDestroyer : MonoBehaviour, ISpell
 {
-    [SerializeField] private LayerMask _layer;
+    private LayerMask _layer;
+    private float _distance = 0.11f;
     
-    public void Execute() {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 0.1f, _layer);
+    private void Awake()
+    {
+        _layer = LayerMask.GetMask("Clouds");
+    }
 
-        if (hit.transform.TryGetComponent<Cloud>(out var cloud))
+    public void Execute() {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, _distance, _layer);
+        
+        if (hit.transform == null)
+            return;
+
+        var cloud = hit.transform.GetComponentInParent<Cloud>();
+        if (cloud != null)
         {
             cloud.DestroySoft();
         }

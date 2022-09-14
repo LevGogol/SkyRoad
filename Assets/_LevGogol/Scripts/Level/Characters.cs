@@ -1,30 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-public class Characters : MonoBehaviour
+[CreateAssetMenu(fileName = "Character", menuName = "ScriptableObjects/Characters", order = 3)]
+public class Characters : ScriptableObject
 {
-    [SerializeField] private List<Character> _characters;
+    [SerializeField] private Character[] _characters;
 
-    public int Count => _characters.Count;
+    public int Count => _characters.Length;
 
     public Character GetCharacter(int index)
     {
         return _characters[index];
     }
 
-    public Character GetCurrentCharacter()
+    [ContextMenu("SetID")]
+    public void SetID()
     {
-        var selectedCharacterIndex = PlayerPrefs.GetInt("Character", 0);
-        return _characters[selectedCharacterIndex];
-    }
-
-    #if UNITY_EDITOR
-    private void Start()
-    {
-        for (int i = 0; i < _characters.Count; i++)
+        for (int i = 0; i < _characters.Length; i++)
         {
             _characters[i].ID = i;
         }
     }
-    #endif
 }

@@ -1,52 +1,45 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using System;
+using DG.Tweening;
+using TMPro;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    public Shield Shield;
-
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private Shield _shield;
+    [SerializeField] private Health _health;
 
-    private int _lifeCount;
     private Rigidbody2D _rigidbody2D;
+    private PlayerCollisions _collisions;
+    private Collider2D _lastCloud;
+    private float _maxDepth = 3.9f; //todo refactor this
 
-    public UnityAction<Collision2D> Collisioned;
-    public UnityAction Damaged;
-    public UnityAction Died;
-
-    public int Life
-    {
-        get { return _lifeCount; }
-        set
-        {
-            _lifeCount = value;
-
-            if (_lifeCount <= 0) 
-                Die();
-        }
-    }
+    public event Action<Coin> CoinCollected;
+    public event Action CloudTouch;
+    public event Action Damaged;
+    public event Action Died;
 
     public void Initialization(Character character)
     {
         _spriteRenderer.sprite = character.Sprite;
+        _health.Ended += Die;
+        _health.Value = character.LifeCount;
 
         if (character.CanJump)
         {
             var jumper = gameObject.AddComponent<Jumper>();
             jumper.Power = character.JumpPower;
         }
-        if (character.CanDestroyCloud) gameObject.AddComponent<CloudDestroyer>();
-        
-        Life = character.LifeCount;
+
+        if (character.CanDestroyCloud) 
+            gameObject.AddComponent<CloudDestroyer>();
     }
 
     private void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-
-        ScoreStorage.Count = 0;
-
+        _shield.Enable();
     }
 
     public bool HasSpell<T>() where T : ISpell
@@ -61,34 +54,64 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (Shield.IsEnable)
-        {
-            Shield.Disable();
-        }
+        if (_shield.IsEnable)
+            _shield.Disable();
         else
+            _health.Value--;
+
+        Damaged?.Invoke();
+    }
+
+    public void TakeLife()
+    {
+        _health.Value++;
+    }
+
+    public void ExtraDie()
+    {
+        _health.Value -= 99999;
+    }
+
+    private void OnCollisionEnter2D(Collision2D cloud)
+    {
+        if (cloud == null) return; //TODO why?
+        if (cloud.collider == _lastCloud) return;
+
+        if (cloud.transform.TryGetComponent<DamageCloud>(out var damageCloud))
         {
-            Life--;
+            TakeDamage();
+            damageCloud.PlayParticles(transform.position);
+        }
+        else if (cloud.transform.GetComponent<Cloud>())
+        {
+            var position = cloud.transform.position;
+            if (position.y < _maxDepth)
+            {
+                _maxDepth = position.y;
+            }
+
+            CloudTouch?.Invoke();
         }
         
-        Damaged.Invoke();
+        _lastCloud = cloud.collider;
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Collisioned?.Invoke(other);
+        if (other.TryGetComponent(out Coin coin))
+        {
+            coin.gameObject.SetActive(false);//TODO NO! Make pool
+            
+            CoinCollected?.Invoke(coin);
+        }
     }
-
+    
     private void Die()
     {
-        if (ScoreStorage.Count > ScoreStorage.MaxCount)
-        {
-            ScoreStorage.MaxCount = ScoreStorage.Count;
-        }
-
         _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         _rigidbody2D.velocity = Vector2.zero;
         _rigidbody2D.freezeRotation = true; //todo check for delete
 
-        Died.Invoke();
+        Died?.Invoke();
     }
 }

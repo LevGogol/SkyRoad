@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6672120532953819934}
   - component: {fileID: 7611213731693729326}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 7837143036606392372}
   - component: {fileID: 6602720298810215353}
   - component: {fileID: 400714980783746806}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flashs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4902,7 +4902,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!1 &8118970459694034939
+--- !u!1 &6830996459148840129
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4910,41 +4910,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8118970459694034940}
-  - component: {fileID: 7203299859090582150}
-  - component: {fileID: 5983303496473376725}
-  - component: {fileID: 8118970459694034943}
-  - component: {fileID: 7168418897766337527}
-  m_Layer: 0
-  m_Name: BadCloud6
+  - component: {fileID: 225384339677166020}
+  - component: {fileID: 6524258994791235561}
+  - component: {fileID: 1856903108100766700}
+  m_Layer: 8
+  m_Name: TouchCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8118970459694034940
+--- !u!4 &225384339677166020
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8118970459694034939}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
-  m_Children:
-  - {fileID: 6672120532953819934}
-  - {fileID: 7837143036606392372}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_GameObject: {fileID: 6830996459148840129}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8118970459694034940}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &7203299859090582150
+--- !u!61 &6524258994791235561
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8118970459694034939}
+  m_GameObject: {fileID: 6830996459148840129}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -4964,6 +4960,54 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 1.3802624}
   m_EdgeRadius: 0
+--- !u!114 &1856903108100766700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830996459148840129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9e0ff6c3b780a46a0b7a64f08e3cf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &8118970459694034939
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8118970459694034940}
+  - component: {fileID: 5983303496473376725}
+  - component: {fileID: 8118970459694034943}
+  - component: {fileID: 7168418897766337527}
+  m_Layer: 8
+  m_Name: BadCloud6
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8118970459694034940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8118970459694034939}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_Children:
+  - {fileID: 6672120532953819934}
+  - {fileID: 7837143036606392372}
+  - {fileID: 225384339677166020}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &5983303496473376725
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -4992,8 +5036,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46404bcdaf4a54842bcca5e11efd4f94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LockInput: 0
   _sprite: {fileID: 7611213731693729326}
   _collider2D: {fileID: 5983303496473376725}
+  _touchCollider: {fileID: 1856903108100766700}
 --- !u!114 &7168418897766337527
 MonoBehaviour:
   m_ObjectHideFlags: 0

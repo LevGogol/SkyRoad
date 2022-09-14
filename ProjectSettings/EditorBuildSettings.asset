@@ -8,10 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_LevGogol/Scenes/Main.unity
     guid: 5832443d84d2521488819e8272db60c6
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   m_configObjects: {}

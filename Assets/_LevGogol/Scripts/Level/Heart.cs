@@ -6,10 +6,10 @@ public class Heart : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("Player"))
         {
-            other.GetComponent<Player>().Life++;
+            other.GetComponent<Player>().TakeLife();
 
-            var soundManager = FindObjectOfType<SoundManager>();//TODO refactor
-            soundManager.PlayClip(Clip.Heart);
+            var audio = FindObjectOfType<Audio>();//TODO refactor
+            audio.PlayClipOneShot(TrackName.Heart);
             
             gameObject.SetActive(false);
         }

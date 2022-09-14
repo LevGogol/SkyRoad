@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
@@ -8,8 +9,9 @@ public class Cloud : MonoBehaviour
     
     [SerializeField] private SpriteRenderer _sprite;
     [SerializeField] private Collider2D _collider2D;
+    [SerializeField] private TouchCollider _touchCollider;
 
-    private float _rotateSpeed = 0.15f;
+    private float _rotateSpeed = 0.225f;
     private bool _isFirstTouch = true;
     private bool _isLeft;
     private Coroutine _rotateCoroutine;
@@ -23,7 +25,17 @@ public class Cloud : MonoBehaviour
         transform.rotation = Quaternion.identity;
     }
 
-    private void OnMouseDown()
+    private void OnEnable()
+    {
+        _touchCollider.TouchDowned += Rotate;
+    }
+
+    public void Flip()
+    {
+        _sprite.transform.rotation = Quaternion.Euler(0, 180, 0);
+    }
+
+    public void Rotate()
     {
         if(LockInput) return;
         
@@ -41,7 +53,7 @@ public class Cloud : MonoBehaviour
                 _isLeft = !_isLeft;
             }
             
-            _rotateCoroutine = StartCoroutine(Rotate());
+            _rotateCoroutine = StartCoroutine(RotateCoroutine(_isLeft));
         }
     }
 
@@ -50,23 +62,30 @@ public class Cloud : MonoBehaviour
         _collider2D.enabled = false;
         _sprite.DOFade(0f, 0.5f);
 
-        var soundManager = FindObjectOfType<SoundManager>(); //TODO refactor
-        soundManager.PlayClip(Clip.DestroyCloud);
+        var audio = FindObjectOfType<Audio>(); //TODO refactor
+        audio.PlayClipOneShot(TrackName.DestroyCloud);
     }
 
-    private IEnumerator Rotate()
+    private IEnumerator RotateCoroutine(bool left)
     {
-        var sign = _isLeft ? -1 : 1;
+        var sign = left ? -1 : 1;
         var fromAngle = transform.rotation;
         var toAngle = Quaternion.Euler(new Vector3(0, 0, sign * 30));
         for (var t = 0f; t < 1; t += Time.deltaTime / _rotateSpeed)
         {
             transform.rotation = Quaternion.Slerp(fromAngle, toAngle, t);
+            _touchCollider.transform.rotation = Quaternion.identity;
             yield return null;
         }
 
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, 30 * sign));
+        _touchCollider.transform.rotation = Quaternion.identity;
 
         _rotateCoroutine = null;
+    }
+
+    private void OnDisable()
+    {
+        _touchCollider.TouchDowned -= Rotate;
     }
 }

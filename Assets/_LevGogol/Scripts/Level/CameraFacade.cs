@@ -2,11 +2,18 @@
 using UnityEngine;
 
 public class CameraFacade : MonoBehaviour {
+    
     [SerializeField] private float _speed;
+    [SerializeField] private Vector3 _offset;
+    [SerializeField] private float _shakeMagnitude;
+    [SerializeField] private  float _shakeDuration = 0.1f;
+    [SerializeField] private Camera _camera;
 
     private Player _player;
     private bool _isShake;
 
+    public Camera Camera => _camera; 
+    
     public void Init(Player player)
     {
         _player = player;
@@ -18,16 +25,16 @@ public class CameraFacade : MonoBehaviour {
 
     IEnumerator ShakeCoroutune() {
         _isShake = true;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(_shakeDuration);
         _isShake = false;
     }
     
-    void Update() {
-        var targetPos = new Vector3(_player.transform.position.x, _player.transform.position.y - 3, -10);
-        transform.position = Vector3.Lerp(transform.position, targetPos, _speed);
+    void LateUpdate() {
+        var targetPos = new Vector3(_player.transform.position.x + _offset.x, _player.transform.position.y + _offset.y, _offset.z);
+        transform.position = Vector3.Lerp(transform.position, targetPos, _speed * Time.deltaTime);
         
         if (_isShake) {
-            transform.position += new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f));
+            transform.position += new Vector3(Random.Range(-_shakeMagnitude, _shakeMagnitude), Random.Range(-_shakeMagnitude, _shakeMagnitude));
         }
     }
 }

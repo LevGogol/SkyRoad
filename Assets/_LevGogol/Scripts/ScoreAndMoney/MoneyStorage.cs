@@ -1,29 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
 
-public static class MoneyStorage {
-    
-    private static int count;
-    private static bool isInit;
+public class MoneyStorage
+{
+    private int _moneyCount;
 
-    public delegate void MoneyDelegate(int val);
-    public static MoneyDelegate MoneyChanged;
+    public event Action<int> MoneyChanged;
     
-    public static int Count {
-        get {
-            if (!isInit) {
-                count = PlayerPrefs.GetInt("Money", 0); 
-                isInit = true;
-            }
-            return count;
-        }
-        set {
-            count = value; 
-            PlayerPrefs.SetInt("Money", value);
-            if(MoneyChanged != null)
-                MoneyChanged(value);
+    public int MoneyCount
+    {
+        get => _moneyCount;
+        set
+        {
+            _moneyCount = value;
+            MoneyChanged?.Invoke(_moneyCount);
         }
     }
-    
-    
 
+    public MoneyStorage(int moneyCount) //TODO where is constructor place
+    {
+        _moneyCount = moneyCount;
+    }
 }

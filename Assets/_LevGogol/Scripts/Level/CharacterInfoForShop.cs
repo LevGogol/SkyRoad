@@ -5,19 +5,14 @@ using UnityEngine.UI;
 public class CharacterInfoForShop : MonoBehaviour
 {
     [SerializeField] private Image _selectedSpriteImage;
-    [SerializeField] private TextMeshProUGUI _priceText;
     [SerializeField] private GameObject[] _lifeImages;
     [SerializeField] private GameObject _flyImage;
-
     [SerializeField] private GameObject _destroyImage;
 
     public void DrawInfo(Character character)
     {
         _selectedSpriteImage.sprite = character.Sprite;
         _selectedSpriteImage.SetNativeSize();
-
-        _priceText.text = character.Price.ToString();
-
         ChangeAbilityImages(character);
     }
 

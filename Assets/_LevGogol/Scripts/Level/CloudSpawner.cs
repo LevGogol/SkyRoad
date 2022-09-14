@@ -45,13 +45,13 @@ public class CloudSpawner : MonoBehaviour
         for (int i = 0; i < 15; i++)
         {
             var cloud = _activeClouds.Dequeue();
-            Destroy(cloud);
+            Destroy(cloud.gameObject);
         }
         
         _upOffset -= _verticalDistanceBetweenClouds;
     }
 
-    public void EnableInputReaction()
+    public void EnableInputReaction() //move to clouds
     {
         _lockInput = false;
         foreach (var activeCloud in _activeClouds)
@@ -67,6 +67,11 @@ public class CloudSpawner : MonoBehaviour
         {
             activeCloud.LockInput = true;
         }
+    }
+
+    public void RotateFirstCloud()
+    {
+        _activeClouds.Peek().Rotate();
     }
 
     private void CreateBorder()
@@ -116,6 +121,8 @@ public class CloudSpawner : MonoBehaviour
         cloud.transform.position += Vector3.right * cloud.SizeX() / 2f;
         cloud.LockInput = _lockInput;
         _activeClouds.Enqueue(cloud);
+        if (Random.Range(0, 2) == 1)
+            cloud.Flip();
         return cloud;
     }
 

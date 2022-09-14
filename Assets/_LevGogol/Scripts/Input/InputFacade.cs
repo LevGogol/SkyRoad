@@ -4,7 +4,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(UIButtons))]
 public class InputFacade : MonoBehaviour
 {
-    public UIButtons _UIButtons;
+    public UIButtons _UIButtons; //TODO WTF? _???
     public event UnityAction SwipeUped;
     public event UnityAction SwipeDowned;
     public event UnityAction TouchDowned;

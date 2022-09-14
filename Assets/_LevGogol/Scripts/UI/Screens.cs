@@ -11,7 +11,7 @@ public class Screens : MonoBehaviour
 
         foreach (var screen in _screens)
         {
-            screen.Hide();
+            screen.gameObject.SetActive(false);
         }
     }
 

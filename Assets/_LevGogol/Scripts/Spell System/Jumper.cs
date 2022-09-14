@@ -6,6 +6,13 @@ public class Jumper : MonoBehaviour, ISpell
     [SerializeField] private float _power;
     
     private Rigidbody2D playerRigidbody;
+    private LayerMask _layer;
+    private float _distance = 0.2f;
+    
+    private void Awake()
+    {
+        _layer = LayerMask.GetMask("Clouds");
+    }
     
     public float Power
     {
@@ -19,6 +26,12 @@ public class Jumper : MonoBehaviour, ISpell
     
     public void Execute()
     {
-        playerRigidbody.AddForce(_power * 100 * new Vector2(playerRigidbody.velocity.x > 0 ? 1 : -1, 1));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, _distance, _layer);
+        
+        if (hit.transform == null)
+            return;
+        
+        playerRigidbody.AddForce(Vector2.up * _power, ForceMode2D.Impulse);
+        Audio.Instance.PlayClipOneShot(TrackName.Jump);
     }
 }

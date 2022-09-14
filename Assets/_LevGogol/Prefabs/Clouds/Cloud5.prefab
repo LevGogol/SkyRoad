@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6672120532953819934}
   - component: {fileID: 7611213731693729326}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,6 +84,76 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &7488111998226962116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5399451880125503410}
+  - component: {fileID: 2276436616220327050}
+  - component: {fileID: 2916031478675037717}
+  m_Layer: 8
+  m_Name: TouchCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5399451880125503410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7488111998226962116}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8118970459694034940}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &2276436616220327050
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7488111998226962116}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.7199999, y: 0.89}
+    newSize: {x: 1.76, y: 0.85}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5.25, y: 2.06}
+  m_EdgeRadius: 0
+--- !u!114 &2916031478675037717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7488111998226962116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9e0ff6c3b780a46a0b7a64f08e3cf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8118970459694034939
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,10 +163,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8118970459694034940}
-  - component: {fileID: 7203299859090582150}
-  - component: {fileID: 5983303496473376725}
+  - component: {fileID: 7487248638273937063}
   - component: {fileID: 8118970459694034943}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cloud5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,36 +184,11 @@ Transform:
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children:
   - {fileID: 6672120532953819934}
+  - {fileID: 5399451880125503410}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &7203299859090582150
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8118970459694034939}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.7199999, y: 0.89}
-    newSize: {x: 1.76, y: 0.85}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 4.4278135, y: 2}
-  m_EdgeRadius: 0
---- !u!70 &5983303496473376725
+--- !u!70 &7487248638273937063
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,7 +197,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 8118970459694034939}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bd3d4838f2817db488425637fba8e1d9, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -172,6 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46404bcdaf4a54842bcca5e11efd4f94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LockInput: 0
   _sprite: {fileID: 7611213731693729326}
-  _collider2D: {fileID: 5983303496473376725}
-  _clip: 6
+  _collider2D: {fileID: 7487248638273937063}
+  _touchCollider: {fileID: 2916031478675037717}

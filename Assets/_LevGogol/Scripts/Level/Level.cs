@@ -1,85 +1,93 @@
-﻿using System.Collections;
+﻿using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Level : MonoBehaviour
 {
-    public UnityAction OnFail;
-
-    [SerializeField] private float _spawnBorderFromPlayer;
-    [SerializeField] private float _destroyBorderFromPlayer;
-    [SerializeField] private Characters _characters;
-    [SerializeField] private Screens _screens;
-    [SerializeField] private InputFacade _input;
     [SerializeField] private CameraFacade _cameraFacade;
-    [SerializeField] private Tutorial _tutorial;
+    [SerializeField] private Tutorial _tutorial; //TODO hide to startScreen
     [SerializeField] private CloudSpawner _cloudSpawner;
-    [SerializeField] private SoundManager _soundManager;
     [SerializeField] private Player _player;
+    [SerializeField] private Audio _audio;
+    
+    private ScoreStorage _scoreStorage;
+    private MoneyStorage _moneyStorage;
+    private BorderRules _borderRules;
+    
+    public event Action Failed;
 
     private void Start()
     {
-        _player.Initialization(_characters.GetCurrentCharacter());
         _cameraFacade.Init(_player);
-        _tutorial.Show(_player);
-        _player.Shield.Enable();
-        StartCoroutine(BoardCoroutine());
+        _borderRules = new BorderRules();
+        StartCoroutine(_borderRules.BoardCoroutine(_player, _cloudSpawner));
         _cloudSpawner.DisableInputReaction();
+        _audio.PlayMusic(TrackName.Background);
     }
 
-    public void StartLevel()
+    public void SetPlayerCharacter(Character character)
     {
+        _player.Initialization(character);
+        _tutorial.Show(_player);
+    }
+
+    public void StartLevel(InputFacade input, Screens screens, ScoreStorage scoreStorage, MoneyStorage moneyStorage)
+    {
+        _scoreStorage = scoreStorage;
+        _moneyStorage = moneyStorage;
         _tutorial.Hide();
-        _screens.Get<LevelScreen>().Show();
-        
+        screens.Get<LevelScreen>().ChangeScore(_scoreStorage.Score);
+        screens.Get<LevelScreen>().ChangeMoney(moneyStorage.MoneyCount);
+        moneyStorage.MoneyChanged += screens.Get<LevelScreen>().ChangeMoney;
+
         if (_player.HasSpell<Jumper>())
-            _input.SwipeUped += _player.GetSpell<Jumper>().Execute;
+            input.SwipeUped += _player.GetSpell<Jumper>().Execute;
 
         if (_player.HasSpell<CloudDestroyer>())
-            _input.SwipeDowned += _player.GetSpell<CloudDestroyer>().Execute;
+            input.SwipeDowned += _player.GetSpell<CloudDestroyer>().Execute;
 
-        var collisionHandler = new CollisionHandler(_player, _soundManager);
+        _player.Damaged += PlayerOnDamaged;
+
+        _player.CloudTouch += () =>
+        {
+            _scoreStorage.Score++;
+            screens.Get<LevelScreen>().ChangeScore(_scoreStorage.Score);
+            _audio.PlayClipOneShot(TrackName.Cloud);
+        };
+        _player.CoinCollected += (coin) =>
+        {
+            screens.Get<LevelScreen>().PlayCoinAnimation(coin.transform.position);
+            _moneyStorage.MoneyCount++;
+            _audio.PlayClipOneShot(TrackName.Coin);
+        };
+
 
         _player.Died += OnDead;
-        _player.Damaged += _cameraFacade.Shake;
-        
+
         _cloudSpawner.EnableInputReaction();
+        _cloudSpawner.RotateFirstCloud();
     }
 
-    private IEnumerator BoardCoroutine()
+    private void PlayerOnDamaged()
     {
-        while (true)
-        {
-            if (_player.transform.position.y + _spawnBorderFromPlayer < _cloudSpawner.DownOffset)
-            {
-                _cloudSpawner.CreateLine();
-            }
-            
-            if (_player.transform.position.y + _destroyBorderFromPlayer < _cloudSpawner.UpOffset)
-            {
-                _cloudSpawner.RemoveLine();
-            }
-            
-            if (_player.transform.position.x < -25 || _player.transform.position.x > 25)
-            {
-                _player.Life -= 100;
-                yield break;
-            }
-
-            yield return null;
-        }
+        _cameraFacade.Shake();
+        _audio.PlayClipOneShot(TrackName.Damage);
     }
+
 
     private void OnDead()
     {
-        _screens.Get<EndScreen>().Show();
-        OnFail.Invoke();
+        if (_scoreStorage.Score > _scoreStorage.MaxScore)
+        {
+            _scoreStorage.MaxScore = _scoreStorage.Score;
+        }
+
+        Failed?.Invoke();
 
         _player.Died -= OnDead;
     }
 
     private void OnDestroy()
     {
-        _player.Damaged -= _cameraFacade.Shake;
+        _player.Damaged -= PlayerOnDamaged;
     }
 }

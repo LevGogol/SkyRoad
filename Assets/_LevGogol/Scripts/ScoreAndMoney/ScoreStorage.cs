@@ -1,37 +1,35 @@
-﻿using UnityEngine;
+﻿using System;
 
-public static class ScoreStorage {
+public class ScoreStorage
+{
+    private int _score;
+    private int _maxScore;
 
-    private static int maxCount;
-    private static int count = 0;
-    private static bool isInit;
+    public event Action<int> ScoreChanged;
+    public event Action<int> MaxScoreChanged;
 
-    public delegate void ScoreDelegate(int val);
-    public static ScoreDelegate ScoreChanged;
-    public static bool maxChanged;
-    
-    public static int Count {
-        get {
-            return count;
-        }
-        set {
-            count = value;
-            if(ScoreChanged != null)
-                ScoreChanged(value);
+    public int Score
+    {
+        get => _score;
+        set
+        {
+            _score = value;
+            ScoreChanged?.Invoke(_score);
         }
     }
 
-    public static int MaxCount {
-        get { return PlayerPrefs.GetInt("MaxScore", 0); }
-        set {
-            maxChanged = false;
-            if (value > MaxCount) {
-                PlayerPrefs.SetInt("MaxScore", value);
-                maxChanged = true;
-            }
+    public int MaxScore
+    {
+        get => _maxScore;
+        set
+        {
+            _maxScore = value;
+            MaxScoreChanged?.Invoke(_maxScore);
         }
     }
 
-
-
+    public ScoreStorage(int maxScore) //TODO where is constructor place
+    {
+        _maxScore = maxScore;
+    }
 }

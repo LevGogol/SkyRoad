@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
 public class ShopScreen : ScreenBase
@@ -8,59 +10,72 @@ public class ShopScreen : ScreenBase
     [SerializeField] private Characters _characters;
     [SerializeField] private CharacterInfoForShop _characterInfoForShop;
     [SerializeField] private ShopGrid _shopGrid;
+    [SerializeField] private int _buyCost;
+    [SerializeField] private TextMeshProUGUI _buyCostText;
+    [SerializeField] private AnimationCurve _showEasing;
+    [SerializeField] private TextMeshProUGUI _moneyText;
 
-    private int _selectedCharacterIndex;
+    public int BuyCost => _buyCost;
+    public Character SelectedCharacter { get; private set; }
 
     private void Start()
     {
-        InitIsBuy();
-
-        _selectedCharacterIndex = PlayerPrefs.GetInt("Character", 0);
-        _shopGrid.Initialization(_characters, _selectedCharacterIndex);
-        _characterInfoForShop.DrawInfo(_characters.GetCharacter(_selectedCharacterIndex));
+        _shopGrid.Initialization(_characters, SelectedCharacter);
+        _characterInfoForShop.DrawInfo(SelectedCharacter);
 
         _shopGrid.Touched += SelectCharacter;
+
+        _buyCostText.text = _buyCost.ToString();
     }
 
-    private void InitIsBuy()
+    public void Initialize(Character selectedCharacter)
     {
-        if (_characters.Count > 32)
-        {
-            Debug.LogError("Can't save all characters");
-        }
-
-        int mask = PlayerPrefs.GetInt("BoughtMask", 1);
-        for (int i = 0; i < _characters.Count; i++)
-        {
-            if ((mask >> i) % 2 == 1)
-                _characters.GetCharacter(i).IsBuy = true;
-        }
+        SelectedCharacter = selectedCharacter;
     }
-
-    private void SelectCharacter(int ID)
+    
+    public void ChangeMoney(int money)
     {
-        _characterInfoForShop.DrawInfo(_characters.GetCharacter(ID));
-        
-        PlayerPrefs.SetInt("Character", ID);
+        _moneyText.text = money.ToString();
     }
 
-    private void BuyRandom()
+    public override void Show()
+    {
+        base.Show();
+        var rectTransform = GetComponent<RectTransform>();
+        rectTransform.localScale = Vector3.zero;
+        rectTransform.DOScale(1, 1f).SetEase(_showEasing);
+        _characterInfoForShop.DrawInfo(SelectedCharacter);
+        _shopGrid.Refresh();
+    }
+
+    public override void Hide()
+    {
+        var rectTransform = GetComponent<RectTransform>();
+        rectTransform.DOScale(0, 1f).OnComplete(base.Hide);
+    }
+
+    public bool BuyRandom()
     {
         var randomIndex = GetRandomIndex();
-        if (randomIndex == -1) return;
-        
+        if (randomIndex == -1) return false;
+
         Character character = _characters.GetCharacter(randomIndex);
 
-        MoneyStorage.Count -= character.Price;
         character.IsBuy = true;
 
-        PlayerPrefs.SetInt("Character", randomIndex);
-
-        int mask = PlayerPrefs.GetInt("BoughtMask", 1) + (1 << randomIndex); //TODO move to save
-        PlayerPrefs.SetInt("BoughtMask", mask);
-
+        SelectedCharacter = character;
         _characterInfoForShop.DrawInfo(character);
+
+        _shopGrid.SelectedCharacter = character;
         _shopGrid.Refresh();
+
+        return true;
+    }
+
+    private void SelectCharacter(Character character)
+    {
+        _characterInfoForShop.DrawInfo(character);
+        SelectedCharacter = character;
     }
 
     private int GetRandomIndex()
@@ -73,27 +88,12 @@ public class ShopScreen : ScreenBase
                 notPurchasedCharacters.Add(i);
             }
         }
-        
+
         if (notPurchasedCharacters.Count == 0)
         {
             return -1;
         }
 
         return notPurchasedCharacters[Random.Range(0, notPurchasedCharacters.Count)];
-    }
-
-    [ContextMenu("Clear")]
-    private void ClearSaveSystem() //TODO move to save System
-    {
-        PlayerPrefs.SetInt("Character", _selectedCharacterIndex);
-        
-        for (int i = 0; i < _characters.Count; i++)
-        {
-            _characters.GetCharacter(i).IsBuy = false;
-        }
-    }
-
-    public void Undo() {
-        SceneManager.LoadScene(0);
     }
 }
