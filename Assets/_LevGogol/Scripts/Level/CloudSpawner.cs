@@ -23,7 +23,7 @@ public class CloudSpawner : MonoBehaviour
 
     private void Awake()
     {
-        var cloud = MakeCloud(0, 0);
+        var cloud = MakeFirstCloud(0, 0);
         cloud.transform.position -= Vector3.right * cloud.SizeX() / 2f;
         cloud.LockInput = true;
         _downOffset -= _verticalDistanceBetweenClouds;
@@ -47,7 +47,7 @@ public class CloudSpawner : MonoBehaviour
             var cloud = _activeClouds.Dequeue();
             Destroy(cloud.gameObject);
         }
-        
+
         _upOffset -= _verticalDistanceBetweenClouds;
     }
 
@@ -89,7 +89,7 @@ public class CloudSpawner : MonoBehaviour
         for (var i = 0; i < 9; i++)
         {
             float cloudSize;
-            
+
             if (i == badCloudIndex)
             {
                 var damageCloud = MakeDamageCloud(_horizontalOffset, _downOffset);
@@ -109,9 +109,19 @@ public class CloudSpawner : MonoBehaviour
 
                 cloudSize = cloud.SizeX();
             }
-            
+
             _horizontalOffset += _horizontalDistanceBetweenClouds + cloudSize;
         }
+    }
+
+    private Cloud MakeFirstCloud(float x, float y)
+    {
+        var index = 1;
+        var cloud = Instantiate(_cloudPrefabs[index], new Vector3(x, y, 0f), Quaternion.identity, transform);
+        cloud.transform.position += Vector3.right * cloud.SizeX() / 2f;
+        cloud.LockInput = _lockInput;
+        _activeClouds.Enqueue(cloud);
+        return cloud;
     }
 
     private Cloud MakeCloud(float x, float y)

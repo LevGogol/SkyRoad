@@ -27,7 +27,18 @@ public class Level : MonoBehaviour
     public void SetPlayerCharacter(Character character)
     {
         _player.Initialization(character);
-        _tutorial.Show(_player);
+        if (_player.CanJump())
+        {
+            _tutorial.ShowUp();
+        }
+        else if (_player.CanDestroyCloud())
+        {
+            _tutorial.ShowDown();
+        }
+        else
+        {
+            _tutorial.ShowDefault();
+        }
     }
 
     public void StartLevel(InputFacade input, Screens screens, ScoreStorage scoreStorage, MoneyStorage moneyStorage)
@@ -39,10 +50,10 @@ public class Level : MonoBehaviour
         screens.Get<LevelScreen>().ChangeMoney(moneyStorage.MoneyCount);
         moneyStorage.MoneyChanged += screens.Get<LevelScreen>().ChangeMoney;
 
-        if (_player.HasSpell<Jumper>())
+        if (_player.CanJump())
             input.SwipeUped += _player.GetSpell<Jumper>().Execute;
 
-        if (_player.HasSpell<CloudDestroyer>())
+        if (_player.CanDestroyCloud())
             input.SwipeDowned += _player.GetSpell<CloudDestroyer>().Execute;
 
         _player.Damaged += PlayerOnDamaged;

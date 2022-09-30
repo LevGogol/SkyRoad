@@ -1,14 +1,13 @@
 ﻿using System;
-using DG.Tweening;
-using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private Shield _shield;
     [SerializeField] private Health _health;
+    [SerializeField] private Jumper _jumper;
+    [SerializeField] private CloudDestroyer _cloudDestroyer;
 
     private Rigidbody2D _rigidbody2D;
     private PlayerCollisions _collisions;
@@ -28,23 +27,37 @@ public class Player : MonoBehaviour
 
         if (character.CanJump)
         {
-            var jumper = gameObject.AddComponent<Jumper>();
-            jumper.Power = character.JumpPower;
+            _jumper.enabled = true;
+            _jumper.Power = character.JumpPower;
+        }
+        else
+        {
+            _jumper.enabled = false;
         }
 
-        if (character.CanDestroyCloud) 
-            gameObject.AddComponent<CloudDestroyer>();
+        if (character.CanDestroyCloud)
+        {
+            _cloudDestroyer.enabled = true;
+        }
+        else
+        {
+            _cloudDestroyer.enabled = false;
+        }
     }
 
     private void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _shield.Enable();
     }
 
-    public bool HasSpell<T>() where T : ISpell
+    public bool CanJump()
     {
-        return GetComponent<T>() != null;
+        return _jumper.enabled;
+    }
+
+    public bool CanDestroyCloud()
+    {
+        return _cloudDestroyer.enabled;
     }
 
     public T GetSpell<T>() where T : ISpell
@@ -54,11 +67,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (_shield.IsEnable)
-            _shield.Disable();
-        else
-            _health.Value--;
-
+        _health.Value--;
         Damaged?.Invoke();
     }
 
@@ -92,7 +101,7 @@ public class Player : MonoBehaviour
 
             CloudTouch?.Invoke();
         }
-        
+
         _lastCloud = cloud.collider;
     }
 
@@ -100,12 +109,12 @@ public class Player : MonoBehaviour
     {
         if (other.TryGetComponent(out Coin coin))
         {
-            coin.gameObject.SetActive(false);//TODO NO! Make pool
-            
+            coin.gameObject.SetActive(false); //TODO NO! Make pool
+
             CoinCollected?.Invoke(coin);
         }
     }
-    
+
     private void Die()
     {
         _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;

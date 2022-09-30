@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ISpell {
+public interface ISpell
+{
     void Execute();
 }

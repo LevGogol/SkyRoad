@@ -2,6 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class Game : MonoBehaviour
 {
@@ -47,6 +48,7 @@ public class Game : MonoBehaviour
         _scoreStorage.MaxScoreChanged += SaveMaxScore;
         _moneyStorage.MoneyChanged += SaveMoney;
         _moneyStorage.MoneyChanged += _screens.Get<ShopScreen>().ChangeMoney;
+        _shop.CharacterSelected += ChangeCharacter;
         _level.Failed += OnFail;
         DOVirtual.DelayedCall(0.3f, () => _input._UIButtons.PlayDowned += EnableLevel);
         _input._UIButtons.MenuDowned += Restart;
@@ -57,6 +59,12 @@ public class Game : MonoBehaviour
         _input._UIButtons.BuyDowned += BuyDownded;
     }
 
+    private void ChangeCharacter(Character obj)
+    {
+        _saveData.CurrentCharacter = _shop.SelectedCharacter;
+        _level.SetPlayerCharacter(_saveData.CurrentCharacter);
+    }
+
     private void SaveMoney(int money)
     {
         _saveData.MoneyCount = money;
@@ -64,15 +72,15 @@ public class Game : MonoBehaviour
 
     private void BuyDownded()
     {
-        if(_moneyStorage.MoneyCount < _shop.BuyCost) 
+        if (_moneyStorage.MoneyCount < _shop.BuyCost)
             return;
 
         if (!_screens.Get<ShopScreen>().BuyRandom())
             return;
-        
+
         _audio.PlayClipOneShot(TrackName.BuyCharacterInShop);
         _moneyStorage.MoneyCount -= _shop.BuyCost;
-        _saveData.CurrentCharacter = _shop.SelectedCharacter;
+        ChangeCharacter(_shop.SelectedCharacter);
         _saveData.SaveCharacterIsBuy(_shop.SelectedCharacter.ID);
     }
 
@@ -110,9 +118,7 @@ public class Game : MonoBehaviour
     private void DisableShop()
     {
         _screens.Get<StartScreen>().Show();
-        _saveData.CurrentCharacter = _shop.SelectedCharacter;
         _screens.Get<ShopScreen>().Hide();
-        _level.SetPlayerCharacter(_saveData.CurrentCharacter);
         _screens.Get<StartScreen>().ChangeMoney(_moneyStorage.MoneyCount);
         _screens.Get<StartScreen>().ChangeMaxScore(_scoreStorage.MaxScore);
         _screens.Get<ShopScreen>().ChangeMoney(_moneyStorage.MoneyCount);
@@ -144,6 +150,7 @@ public class Game : MonoBehaviour
         _moneyStorage.MoneyChanged -= SaveMoney;
         _moneyStorage.MoneyChanged -= _screens.Get<ShopScreen>().ChangeMoney;
         _level.Failed -= OnFail;
+        _shop.CharacterSelected -= ChangeCharacter;
         _input._UIButtons.PlayDowned -= EnableLevel;
         _input._UIButtons.MenuDowned -= Restart;
         _input._UIButtons.ShopDowned -= EnableShop;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class ShopScreen : ScreenBase
     [SerializeField] private AnimationCurve _showEasing;
     [SerializeField] private TextMeshProUGUI _moneyText;
 
+    public event Action<Character> CharacterSelected;
+    
     public int BuyCost => _buyCost;
     public Character SelectedCharacter { get; private set; }
 
@@ -76,6 +79,7 @@ public class ShopScreen : ScreenBase
     {
         _characterInfoForShop.DrawInfo(character);
         SelectedCharacter = character;
+        CharacterSelected.Invoke(character);
     }
 
     private int GetRandomIndex()

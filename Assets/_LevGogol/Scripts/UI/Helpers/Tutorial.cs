@@ -3,66 +3,54 @@ using UnityEngine;
 
 public class Tutorial : MonoBehaviour
 {
+    [SerializeField] private float _hideSpeed;
     [SerializeField] private GameObject _up;
     [SerializeField] private GameObject _down;
     [SerializeField] private GameObject _default;
-
-    private GameObject _current;
-
-    public void Show(Player player)
-    {
-        _up.SetActive(false);
-        _down.SetActive(false);
-        _default.SetActive(false);
-        
-        if (player.HasSpell<Jumper>())
-        {
-            ShowUp();
-        }
-        else if (player.HasSpell<CloudDestroyer>())
-        {
-            ShowDown();
-        }
-        else
-        {
-            ShowDefault();
-        }
-    }
 
     public void Hide()
     {
         StartCoroutine(SoftHide());
     }
 
-    private void ShowUp()
+    public void ShowUp()
     {
-        _current = _up;
+        HideAll();
         _up.SetActive(true);
     }
 
-    private void ShowDown()
+    public void ShowDown()
     {
-        _current = _down;
+        HideAll();
         _down.SetActive(true);
     }
 
-    private void ShowDefault()
+    public void ShowDefault()
     {
-        _current = _default;
+        HideAll();
         _default.SetActive(true);
+    }
+
+    private void HideAll()
+    {
+        _up.SetActive(false);
+        _down.SetActive(false);
+        _default.SetActive(false);
     }
 
     private IEnumerator SoftHide()
     {
-        foreach (var sprite in _current.GetComponents<SpriteRenderer>())
+        var alpha = 1f;
+        while (alpha > 0)
         {
-            while (sprite.color.a > 0)
+            foreach (var sprite in GetComponentsInChildren<SpriteRenderer>())
             {
-                sprite.color -= new Color(0, 0, 0, 2f * Time.deltaTime);
+                sprite.color -= new Color(0, 0, 0, _hideSpeed * Time.deltaTime);
+                alpha = sprite.color.a;
                 yield return null;
             }
         }
-        
-        _current.SetActive(false);
+
+        gameObject.SetActive(false);
     }
 }
