@@ -10,6 +10,9 @@ public class Cloud : MonoBehaviour
     [SerializeField] private SpriteRenderer _sprite;
     [SerializeField] private Collider2D _collider2D;
     [SerializeField] private TouchCollider _touchCollider;
+    [SerializeField] private float _animateDistance;
+    [SerializeField] private float _animateDuration;
+    [SerializeField] private ParticleSystem _explotionParicles;
 
     private float _rotateSpeed = 0.225f;
     private bool _isFirstTouch = true;
@@ -64,6 +67,14 @@ public class Cloud : MonoBehaviour
 
         var audio = FindObjectOfType<Audio>(); //TODO refactor
         audio.PlayClipOneShot(TrackName.DestroyCloud);
+    }
+
+    public void Animate(Vector3 touchPosition)
+    {
+        transform.DOLocalMoveY(transform.position.y + _animateDistance, _animateDuration).SetLoops(2, LoopType.Yoyo);
+        var explosionOffset = 0.25f;
+        touchPosition += Vector3.down * explosionOffset;
+        Instantiate(_explotionParicles, touchPosition, Quaternion.identity);
     }
 
     private IEnumerator RotateCoroutine(bool left)

@@ -220,3 +220,7 @@ MonoBehaviour:
   _sprite: {fileID: 7611213731693729326}
   _collider2D: {fileID: 5983303496473376725}
   _touchCollider: {fileID: 353149388851652107}
+  _animateDistance: -0.1
+  _animateDuration: 0.1
+  _explotionParicles: {fileID: 3091623804542104204, guid: 1eba40ad8f9a7e5489a5d33ab52397b1,
+    type: 3}

@@ -64,7 +64,7 @@ public class Audio : MonoBehaviour
         var track = Tracks[(int) clipKey];
         if (track != null)
         {
-            _soundSource.Stop();
+            // _soundSource.Stop();
 
             var clipWithSettings = GetRandomAudioClipWithSettings(track.ClipsWithSettings);
             _soundSource.pitch = clipWithSettings.Pitch;

@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private PlayerCollisions _collisions;
     private Collider2D _lastCloud;
-    private float _maxDepth = 3.9f; //todo refactor this
 
     public event Action<Coin> CoinCollected;
     public event Action CloudTouch;
@@ -91,14 +90,9 @@ public class Player : MonoBehaviour
             TakeDamage();
             damageCloud.PlayParticles(transform.position);
         }
-        else if (cloud.transform.GetComponent<Cloud>())
+        else if (cloud.transform.TryGetComponent<Cloud>(out var goodCloud))
         {
-            var position = cloud.transform.position;
-            if (position.y < _maxDepth)
-            {
-                _maxDepth = position.y;
-            }
-
+            goodCloud.Animate(transform.position);
             CloudTouch?.Invoke();
         }
 
