@@ -26,6 +26,7 @@ public class LevelScreen : ScreenBase
 
         var coinForAnimation = Instantiate(_coinImagePrefab, transform);
         coinForAnimation.position = startPointOnScreen;
+        coinForAnimation.DOSizeDelta(Vector2.one * 0.01f, 3.0f);
         coinForAnimation.DOMove(_coinImage.position, 1f).SetEase(Ease.OutQuint).OnComplete(() => Destroy(coinForAnimation.gameObject));
     }
 }
