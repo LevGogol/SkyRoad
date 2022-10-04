@@ -38,6 +38,7 @@ public class Game : MonoBehaviour
         _screens.Get<StartScreen>().Show();
         _screens.Get<StartScreen>().ChangeMoney(_moneyStorage.MoneyCount);
         _screens.Get<StartScreen>().ChangeMaxScore(_scoreStorage.MaxScore);
+        _screens.Get<LevelScreen>().ChangeMaxScore(_scoreStorage.MaxScore);
         _screens.Get<ShopScreen>().ChangeMoney(_moneyStorage.MoneyCount);
 
         _level.SetPlayerCharacter(_saveData.CurrentCharacter);
@@ -120,8 +121,7 @@ public class Game : MonoBehaviour
         _screens.Get<StartScreen>().Show();
         _screens.Get<ShopScreen>().Hide();
         _screens.Get<StartScreen>().ChangeMoney(_moneyStorage.MoneyCount);
-        _screens.Get<StartScreen>().ChangeMaxScore(_scoreStorage.MaxScore);
-        _screens.Get<ShopScreen>().ChangeMoney(_moneyStorage.MoneyCount);
+        // _screens.Get<ShopScreen>().ChangeMoney(_moneyStorage.MoneyCount);
     }
 
     private void OnFail()

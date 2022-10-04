@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class LevelScreen : ScreenBase
 {
+    [SerializeField] private float _moneyScaleDuration = 0.3f;
+    [SerializeField] private float _moneySpeedDuration = 1f;
     [SerializeField] private TextMeshProUGUI _moneyText;
     [SerializeField] private RectTransform _coinImagePrefab;
     [SerializeField] private RectTransform _coinImage;
     [SerializeField] private Camera _camera;
     [SerializeField] private TextMeshProUGUI _scoreText;
-    [SerializeField] private float _moneyScaleDuration = 0.3f;
-    [SerializeField] private float _moneySpeedDuration = 1f;
+    [SerializeField] private TextMeshProUGUI _maxScoreText;
 
     public void ChangeScore(int score)
     {
@@ -20,6 +21,11 @@ public class LevelScreen : ScreenBase
     public void ChangeMoney(int money)
     {
         _moneyText.text = money.ToString();
+    }
+    
+    public void ChangeMaxScore(int score)
+    {
+        _maxScoreText.text = score.ToString();
     }
     
     public void PlayCoinAnimation(Vector3 worldPosition)
