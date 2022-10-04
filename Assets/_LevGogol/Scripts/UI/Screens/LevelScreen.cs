@@ -9,6 +9,8 @@ public class LevelScreen : ScreenBase
     [SerializeField] private RectTransform _coinImage;
     [SerializeField] private Camera _camera;
     [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private float _moneyScaleDuration = 0.3f;
+    [SerializeField] private float _moneySpeedDuration = 1f;
 
     public void ChangeScore(int score)
     {

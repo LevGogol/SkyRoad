@@ -25,7 +25,7 @@ public class CameraFacade : MonoBehaviour {
 
     IEnumerator ShakeCoroutune() {
         _isShake = true;
-        yield return new WaitForSeconds(_shakeDuration);
+        yield return new WaitForSecondsRealtime(_shakeDuration);
         _isShake = false;
     }
     
