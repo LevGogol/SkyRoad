@@ -247,16 +247,15 @@ PlayerSettings:
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: "K:/\u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u044B
-    \u0434\u043B\u044F gamedev/SkyRoad2/user.keystore"
-  AndroidKeyaliasName: skyroadkey
+  AndroidKeystoreName: '{inproject}: user.keystore'
+  AndroidKeyaliasName: nekrosman1
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
   AndroidEnableTango: 0
   androidEnableBanner: 1
   androidUseLowAccuracyLocation: 0
-  androidUseCustomKeystore: 0
+  androidUseCustomKeystore: 1
   m_AndroidBanners:
   - width: 320
     height: 180
@@ -666,7 +665,8 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    7: 
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

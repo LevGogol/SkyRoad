@@ -2,7 +2,6 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
 
 public class Game : MonoBehaviour
 {

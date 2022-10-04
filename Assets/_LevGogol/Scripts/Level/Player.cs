@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     public event Action Damaged;
     public event Action Died;
 
+    public string SkinName => _spriteRenderer.sprite.name;
+
     public void Initialization(Character character)
     {
         _spriteRenderer.sprite = character.Sprite;

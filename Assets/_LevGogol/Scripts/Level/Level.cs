@@ -13,7 +13,10 @@ public class Level : MonoBehaviour
     private MoneyStorage _moneyStorage;
     private BorderRules _borderRules;
     
+    public event Action Started;
     public event Action Failed;
+
+    public Player Player => _player;
 
     private void Start()
     {
@@ -76,6 +79,8 @@ public class Level : MonoBehaviour
 
         _cloudSpawner.EnableInputReaction();
         _cloudSpawner.RotateFirstCloud();
+        
+        Started?.Invoke();
     }
 
     private void PlayerOnDamaged()
