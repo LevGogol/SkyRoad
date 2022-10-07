@@ -57,6 +57,8 @@ public class Game : MonoBehaviour
         _input._UIButtons.PauseDowned += EnablePause;
         _input._UIButtons.PauseOffDowned += DisablePause;
         _input._UIButtons.BuyDowned += BuyDownded;
+
+        _screens.Get<PauseScreen>().Hidden += EnableTimeScale;
     }
 
     private void ChangeCharacter(Character obj)
@@ -97,8 +99,13 @@ public class Game : MonoBehaviour
 
     private void DisablePause()
     {
-        Time.timeScale = 1;
+        //Time.timeScale = 1; // moved to listeners
         _screens.Get<PauseScreen>().Hide();
+    }
+
+    private void EnableTimeScale()
+    {
+        Time.timeScale = 1;
     }
 
     private void EnableLevel()
@@ -133,7 +140,7 @@ public class Game : MonoBehaviour
     private void Restart()
     {
         _input.TouchDowned -= Restart;
-        Time.timeScale = 1; //TODO NO!!! NO!!! NO!!!
+        EnableTimeScale(); //TODO NO!!! NO!!! NO!!!
         ReleaseListeners();
 
         SceneManager.LoadScene(0);
@@ -146,6 +153,8 @@ public class Game : MonoBehaviour
 
     private void ReleaseListeners()
     {
+        _screens.Get<PauseScreen>().Hidden -= EnableTimeScale;
+
         _scoreStorage.MaxScoreChanged -= SaveMaxScore;
         _moneyStorage.MoneyChanged -= SaveMoney;
         _moneyStorage.MoneyChanged -= _screens.Get<ShopScreen>().ChangeMoney;
