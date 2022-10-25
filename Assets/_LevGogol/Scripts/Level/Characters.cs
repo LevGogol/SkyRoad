@@ -13,8 +13,12 @@ public class Characters : ScriptableObject
         return _characters[index];
     }
 
-    [ContextMenu("SetID")]
-    public void SetID()
+    private void OnValidate()
+    {
+        SetID();
+    }
+
+    private void SetID()
     {
         for (int i = 0; i < _characters.Length; i++)
         {

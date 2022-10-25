@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1fe9874001f4f10b4a393dbbc1ea267, type: 3}
   m_Name: Character 18
   m_EditorClassIdentifier: 
-  ID: 18
+  ID: 16
   Sprite: {fileID: 21300000, guid: 0e7a677d86c7fd24ab2a6794902dfb9c, type: 3}
   LifeCount: 1
   CanJump: 0

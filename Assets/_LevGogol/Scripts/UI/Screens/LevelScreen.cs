@@ -12,20 +12,30 @@ public class LevelScreen : ScreenBase
     [SerializeField] private Camera _camera;
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _maxScoreText;
+    [SerializeField] private GameObject[] _hearts;
 
-    public void ChangeScore(int score)
+    public void SetScore(int score)
     {
         _scoreText.text = score.ToString();
     }
 
-    public void ChangeMoney(int money)
+    public void SetMoney(int money)
     {
         _moneyText.text = money.ToString();
     }
     
-    public void ChangeMaxScore(int score)
+    public void SetMaxScore(int score)
     {
         _maxScoreText.text = score.ToString();
+    }
+
+    public void SetHearts(int value)
+    {
+        for (int i = 0; i < _hearts.Length; i++)
+        {
+            var isEnable = i < value;
+            _hearts[i].SetActive(isEnable);
+        }
     }
     
     public void PlayCoinAnimation(Vector3 worldPosition)
@@ -34,7 +44,9 @@ public class LevelScreen : ScreenBase
 
         var coinForAnimation = Instantiate(_coinImagePrefab, transform);
         coinForAnimation.position = startPointOnScreen;
-        coinForAnimation.DOSizeDelta(Vector2.one * 0.01f, 3.0f);
-        coinForAnimation.DOMove(_coinImage.position, 1f).SetEase(Ease.OutQuint).OnComplete(() => Destroy(coinForAnimation.gameObject));
+        var sequenceCoin = DOTween.Sequence();
+        sequenceCoin.Append(coinForAnimation.DOMove(_coinImage.position, _moneySpeedDuration).SetEase(Ease.OutQuint)).
+            Join(coinForAnimation.DOScale(Vector2.zero, _moneyScaleDuration).SetEase(Ease.InExpo)).
+            OnComplete(() => Destroy(coinForAnimation.gameObject));
     }
 }

@@ -6,13 +6,15 @@ public class ShopGrid : MonoBehaviour
 {
     [SerializeField] private ShopCell _shopCellPrefab;
     [SerializeField] private RectTransform _root;
+    [SerializeField] private SwipeContent _swipeContent;
 
-    private List<ShopCell> _cells = new List<ShopCell>(30);
-    public Character SelectedCharacter;
+    private List<ShopCell> _cells = new List<ShopCell>(50);
+    
+    [HideInInspector] public Character SelectedCharacter; //TODO rude
 
     public event Action<Character> Touched;
 
-    public void Initialization(Characters characters, Character selectedCharacter)
+    public void Initialize(Characters characters, Character selectedCharacter)
     {
         SelectedCharacter = selectedCharacter;
         
@@ -27,6 +29,8 @@ public class ShopGrid : MonoBehaviour
             
             _cells.Add(cell);
         }
+        
+        _swipeContent.Initialize(selectedCharacter.ID);
     }
 
     private void OnTouched(Character character)
@@ -50,6 +54,8 @@ public class ShopGrid : MonoBehaviour
             else 
                 _cells[i].DisableHighlight();
         }
+        
+        _swipeContent.Initialize(SelectedCharacter.ID);
     }
 
     private void OnDestroy()

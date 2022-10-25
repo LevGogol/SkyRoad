@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     public event Action Damaged;
     public event Action Died;
 
+    public Health Health => _health;
+
     public void Initialization(Character character)
     {
         _spriteRenderer.sprite = character.Sprite;

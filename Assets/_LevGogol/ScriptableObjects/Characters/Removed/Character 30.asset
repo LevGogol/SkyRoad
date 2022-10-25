@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1fe9874001f4f10b4a393dbbc1ea267, type: 3}
-  m_Name: Character 17
+  m_Name: Character 30
   m_EditorClassIdentifier: 
-  ID: 15
-  Sprite: {fileID: 21300000, guid: e0e7d7c3b669de94287b0da365d9ffaa, type: 3}
+  ID: 30
+  Sprite: {fileID: 21300000, guid: 43d222a442579ba49b4a5d10eecdf987, type: 3}
   LifeCount: 1
   CanJump: 0
   JumpPower: 0
-  CanDestroyCloud: 1
+  CanDestroyCloud: 0
   IsBuy: 1

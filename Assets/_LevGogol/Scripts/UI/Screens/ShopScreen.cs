@@ -13,7 +13,6 @@ public class ShopScreen : ScreenBase
     [SerializeField] private ShopGrid _shopGrid;
     [SerializeField] private int _buyCost;
     [SerializeField] private TextMeshProUGUI _buyCostText;
-    //[SerializeField] private AnimationCurve _showEasing;
     [SerializeField] private TextMeshProUGUI _moneyText;
 
     public event Action<Character> CharacterSelected;
@@ -23,7 +22,7 @@ public class ShopScreen : ScreenBase
 
     private void Start()
     {
-        _shopGrid.Initialization(_characters, SelectedCharacter);
+        _shopGrid.Initialize(_characters, SelectedCharacter);
         _characterInfoForShop.DrawInfo(SelectedCharacter);
 
         _shopGrid.Touched += SelectCharacter;
@@ -44,18 +43,8 @@ public class ShopScreen : ScreenBase
     public override void Show()
     {
         base.Show();
-        //var rectTransform = GetComponent<RectTransform>();
-        //rectTransform.localScale = Vector3.zero;
-        //rectTransform.DOScale(1, 1f).SetEase(_showEasing);
         _characterInfoForShop.DrawInfo(SelectedCharacter);
-        _shopGrid.Refresh();
-    }
-
-    public override void Hide()
-    {
-        base.Hide();
-        //var rectTransform = GetComponent<RectTransform>();
-        //rectTransform.DOScale(0, 1f).OnComplete(base.Hide);
+        // _shopGrid.Refresh();
     }
 
     public bool BuyRandom()

@@ -12,6 +12,7 @@ public class Level : MonoBehaviour
     private ScoreStorage _scoreStorage;
     private MoneyStorage _moneyStorage;
     private BorderRules _borderRules;
+    private Screens _screens;
     
     public event Action Failed;
 
@@ -45,47 +46,57 @@ public class Level : MonoBehaviour
     {
         _scoreStorage = scoreStorage;
         _moneyStorage = moneyStorage;
+        _screens = screens;
         _tutorial.Hide();
-        screens.Get<LevelScreen>().ChangeScore(_scoreStorage.Score);
-        screens.Get<LevelScreen>().ChangeMoney(moneyStorage.MoneyCount);
-        moneyStorage.MoneyChanged += screens.Get<LevelScreen>().ChangeMoney;
+        _screens.Get<LevelScreen>().SetScore(_scoreStorage.Score);
+        _screens.Get<LevelScreen>().SetMoney(moneyStorage.MoneyCount);
 
+        moneyStorage.MoneyChanged += _screens.Get<LevelScreen>().SetMoney;
+        
         if (_player.CanJump())
             input.SwipeUped += _player.GetSpell<Jumper>().Execute;
 
         if (_player.CanDestroyCloud())
             input.SwipeDowned += _player.GetSpell<CloudDestroyer>().Execute;
 
-        _player.Damaged += PlayerOnDamaged;
-
-        _player.CloudTouch += () =>
-        {
-            _scoreStorage.Score++;
-            screens.Get<LevelScreen>().ChangeScore(_scoreStorage.Score);
-            _audio.PlayClipOneShot(TrackName.Cloud);
-        };
-        _player.CoinCollected += (coin) =>
-        {
-            screens.Get<LevelScreen>().PlayCoinAnimation(coin.transform.position);
-            _moneyStorage.MoneyCount++;
-            _audio.PlayClipOneShot(TrackName.Coin);
-        };
-
-
-        _player.Died += OnDead;
+        _player.Damaged += OnPlayerDamaged;
+        _player.CloudTouch += OnPlayerCloudTouch;
+        _player.CoinCollected += OnPlayerCoinCollected;
+        _player.Health.Changed += OnPlayerHealthChanged;
+        _player.Died += OnPlayerDead;
+        
+        OnPlayerHealthChanged(_player.Health.Value);
 
         _cloudSpawner.EnableInputReaction();
         _cloudSpawner.RotateFirstCloud();
     }
 
-    private void PlayerOnDamaged()
+    private void OnPlayerCoinCollected(Coin coin)
+    {
+        _screens.Get<LevelScreen>().PlayCoinAnimation(coin.transform.position);
+        _moneyStorage.MoneyCount++;
+        _audio.PlayClipOneShot(TrackName.Coin);
+    }
+
+    private void OnPlayerCloudTouch()
+    {
+        _scoreStorage.Score++;
+        _screens.Get<LevelScreen>().SetScore(_scoreStorage.Score);
+        _audio.PlayClipOneShot(TrackName.Cloud);
+    }
+
+    private void OnPlayerHealthChanged(int count)
+    {
+        _screens.Get<LevelScreen>().SetHearts(count);
+    }
+
+    private void OnPlayerDamaged()
     {
         _cameraFacade.Shake();
         _audio.PlayClipOneShot(TrackName.Damage);
     }
 
-
-    private void OnDead()
+    private void OnPlayerDead()
     {
         if (_scoreStorage.Score > _scoreStorage.MaxScore)
         {
@@ -94,11 +105,11 @@ public class Level : MonoBehaviour
 
         Failed?.Invoke();
 
-        _player.Died -= OnDead;
+        _player.Died -= OnPlayerDead;
     }
 
     private void OnDestroy()
     {
-        _player.Damaged -= PlayerOnDamaged;
+        _player.Damaged -= OnPlayerDamaged;
     }
 }

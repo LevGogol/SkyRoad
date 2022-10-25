@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1fe9874001f4f10b4a393dbbc1ea267, type: 3}
   m_Name: Character 13
   m_EditorClassIdentifier: 
-  ID: 13
+  ID: 11
   Sprite: {fileID: 21300000, guid: 1968a7c92069d544785ee3efe2469d95, type: 3}
   LifeCount: 1
   CanJump: 1
-  JumpPower: 1
+  JumpPower: 2
   CanDestroyCloud: 0
   IsBuy: 1

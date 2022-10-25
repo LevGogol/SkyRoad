@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 692925209290240364}
   - component: {fileID: 692925209290240371}
   - component: {fileID: 692925209290240365}
+  - component: {fileID: 8879043502522776873}
   - component: {fileID: 8488132218798251585}
   - component: {fileID: 5653921707848971200}
   - component: {fileID: 692925209290240368}
@@ -87,9 +88,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 6365878194676937652}
-  _health: {fileID: 0}
-  _jumper: {fileID: 0}
-  _cloudDestroyer: {fileID: 0}
+  _health: {fileID: 8879043502522776873}
+  _jumper: {fileID: 8488132218798251585}
+  _cloudDestroyer: {fileID: 5653921707848971200}
+--- !u!114 &8879043502522776873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692925209290240375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc8954df8539e3d4fbf25a5b66d04857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8488132218798251585
 MonoBehaviour:
   m_ObjectHideFlags: 0

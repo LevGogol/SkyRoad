@@ -1,17 +1,11 @@
 using System;
-using DG.Tweening;
-using TMPro;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float _fadeDuration;
-    [SerializeField] private float _showDuration;
-    [SerializeField] private SpriteRenderer _sprite;
-    [SerializeField] private TextMeshPro _health;
-    
     private int _lifeCount;
 
+    public event Action<int> Changed;
     public event Action Ended;
     
     public int Value
@@ -20,17 +14,8 @@ public class Health : MonoBehaviour
         set
         {
             _lifeCount = value;
-            _health.text = _lifeCount.ToString();
 
-            var sequenceText = DOTween.Sequence();
-            sequenceText.Append(_health.DOFade(1f, _fadeDuration)).
-                AppendInterval(_showDuration).
-                Append(_health.DOFade(0f, _fadeDuration));
-
-            var sequenceSprite = DOTween.Sequence();
-            sequenceSprite.Append(_sprite.DOFade(1f, _fadeDuration)).
-                AppendInterval(_showDuration).
-                Append(_sprite.DOFade(0f, _fadeDuration));
+            Changed?.Invoke(_lifeCount);
 
             if (_lifeCount <= 0)
                 Ended?.Invoke();
