@@ -9,7 +9,7 @@ public class PauseScreen : ScreenBase
     [SerializeField] private TextMeshProUGUI _countdownText;
     [SerializeField] private int _timeout;
 
-    public Action Hidden { get; set; }
+    public event Action Hidden;
 
     public override void Show()
     {
