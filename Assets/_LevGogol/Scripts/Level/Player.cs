@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private PlayerCollisions _collisions;
     private Collider2D _lastCloud;
+    private Character _character;
 
     public event Action<Coin> CoinCollected;
     public event Action CloudTouch;
@@ -19,24 +20,26 @@ public class Player : MonoBehaviour
     public event Action Died;
 
     public Health Health => _health;
+    public string SkinName => _character.Sprite.name;
 
     public void Initialization(Character character)
     {
-        _spriteRenderer.sprite = character.Sprite;
+        _character = character;
+        _spriteRenderer.sprite = _character.Sprite;
         _health.Ended += Die;
-        _health.Value = character.LifeCount;
+        _health.Value = _character.LifeCount;
 
-        if (character.CanJump)
+        if (_character.CanJump)
         {
             _jumper.enabled = true;
-            _jumper.Power = character.JumpPower;
+            _jumper.Power = _character.JumpPower;
         }
         else
         {
             _jumper.enabled = false;
         }
 
-        if (character.CanDestroyCloud)
+        if (_character.CanDestroyCloud)
         {
             _cloudDestroyer.enabled = true;
         }

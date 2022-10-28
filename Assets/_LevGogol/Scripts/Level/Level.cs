@@ -14,6 +14,7 @@ public class Level : MonoBehaviour
     private BorderRules _borderRules;
     private Screens _screens;
     
+    public event Action Started;
     public event Action Failed;
 
     private void Start()
@@ -69,6 +70,8 @@ public class Level : MonoBehaviour
 
         _cloudSpawner.EnableInputReaction();
         _cloudSpawner.RotateFirstCloud();
+        
+        Started?.Invoke();
     }
 
     private void OnPlayerCoinCollected(Coin coin)
