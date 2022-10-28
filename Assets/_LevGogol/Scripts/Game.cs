@@ -20,7 +20,7 @@ public class Game : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 144;
 
         _scoreStorage = new ScoreStorage(_saveData.MaxScore);
         _moneyStorage = new MoneyStorage(_saveData.MoneyCount);
