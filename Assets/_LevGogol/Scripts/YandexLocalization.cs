@@ -5,6 +5,7 @@ using YG;
 
 public class YandexLocalization : MonoBehaviour
 {
+    [SerializeField] private string _testLanguage;
     [SerializeField] private TextMeshProUGUILocalization[] _textMeshProUGUILocalization;
      
      private string _language;
@@ -17,8 +18,13 @@ public class YandexLocalization : MonoBehaviour
 
      private void Translate()
      {
-         if(_language == "")
+         if (String.IsNullOrEmpty(_language))
+         {
              _language = YandexGame.EnvironmentData.language;
+#if UNITY_EDITOR
+             _language = _testLanguage;
+#endif
+         }
          
          if(_language == "ru")
              TranslateToRussia();

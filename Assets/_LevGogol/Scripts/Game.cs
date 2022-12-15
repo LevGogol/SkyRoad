@@ -2,7 +2,6 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
 
 public class Game : MonoBehaviour
 {
@@ -13,7 +12,7 @@ public class Game : MonoBehaviour
     [SerializeField] private SaveData _saveData;
     [SerializeField] private Characters _characters;
 
-    private ScoreStorage _scoreStorage;
+    public ScoreStorage ScoreStorage;
     private MoneyStorage _moneyStorage;
 
     private ShopScreen _shop => _screens.Get<ShopScreen>();
@@ -22,7 +21,7 @@ public class Game : MonoBehaviour
     {
         Application.targetFrameRate = 144;
 
-        _scoreStorage = new ScoreStorage(_saveData.MaxScore);
+        ScoreStorage = new ScoreStorage(_saveData.MaxScore);
         _moneyStorage = new MoneyStorage(_saveData.MoneyCount);
     }
 
@@ -37,8 +36,8 @@ public class Game : MonoBehaviour
 
         _screens.Get<StartScreen>().Show();
         _screens.Get<StartScreen>().ChangeMoney(_moneyStorage.MoneyCount);
-        _screens.Get<StartScreen>().ChangeMaxScore(_scoreStorage.MaxScore);
-        _screens.Get<LevelScreen>().SetMaxScore(_scoreStorage.MaxScore);
+        _screens.Get<StartScreen>().ChangeMaxScore(ScoreStorage.MaxScore);
+        _screens.Get<LevelScreen>().SetMaxScore(ScoreStorage.MaxScore);
         _screens.Get<ShopScreen>().ChangeMoney(_moneyStorage.MoneyCount);
 
         _level.SetPlayerCharacter(_saveData.CurrentCharacter);
@@ -46,7 +45,7 @@ public class Game : MonoBehaviour
 
     private void OnEnable()
     {
-        _scoreStorage.MaxScoreChanged += SaveMaxScore;
+        ScoreStorage.MaxScoreChanged += SaveMaxScore;
         _moneyStorage.MoneyChanged += SaveMoney;
         _moneyStorage.MoneyChanged += _screens.Get<ShopScreen>().ChangeMoney;
         _shop.CharacterSelected += ChangeCharacter;
@@ -111,7 +110,7 @@ public class Game : MonoBehaviour
 
     private void EnableLevel()
     {
-        _level.StartLevel(_input, _screens, _scoreStorage, _moneyStorage); //TODO to one argument
+        _level.StartLevel(_input, _screens, ScoreStorage, _moneyStorage); //TODO to one argument
         _screens.Get<StartScreen>().Hide();
         _screens.Get<LevelScreen>().Show();
     }
@@ -155,7 +154,7 @@ public class Game : MonoBehaviour
     {
         _screens.Get<PauseScreen>().Hidden -= EnableTimeScale;
 
-        _scoreStorage.MaxScoreChanged -= SaveMaxScore;
+        ScoreStorage.MaxScoreChanged -= SaveMaxScore;
         _moneyStorage.MoneyChanged -= SaveMoney;
         _moneyStorage.MoneyChanged -= _screens.Get<ShopScreen>().ChangeMoney;
         _level.Failed -= OnFail;
