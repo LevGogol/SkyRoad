@@ -6,7 +6,7 @@ public class YandexLiderboard : MonoBehaviour
 {
     [SerializeField] private Game _game;
 
-    private void OnEnable()
+    private void Start()
     {
         _game.ScoreStorage.MaxScoreChanged += SendMaxScore;
     }
@@ -16,7 +16,7 @@ public class YandexLiderboard : MonoBehaviour
         YandexGame.NewLeaderboardScores( "main", maxScore);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _game.ScoreStorage.MaxScoreChanged -= SendMaxScore;
     }

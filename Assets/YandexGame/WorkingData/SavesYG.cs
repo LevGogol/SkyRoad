@@ -9,9 +9,9 @@ namespace YG
         public bool feedbackDone;
         public bool promptDone;
 
-        // Ваши сохранения
-        public int money = 1;
-        public string newPlayerName = "Hello!";
-        public bool[] openLevels = new bool[3];
+        //My data
+        public int MaxScore;
+        public int MoneyCount;
+        // public Character CurrentCharacter;
     }
 }
